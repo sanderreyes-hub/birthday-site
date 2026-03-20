@@ -2,47 +2,78 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>For You 💖</title>
+<title>For Yurie 💖</title>
 
 <style>
   body {
     margin: 0;
     font-family: 'Arial', sans-serif;
-    text-align: center;
     background: linear-gradient(to right, #ff9a9e, #fecfef);
-    overflow: hidden;
+    text-align: center;
     color: white;
+    overflow: hidden;
+  }
+
+  .screen {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    transition: opacity 1s;
+  }
+
+  #mainScreen {
+    opacity: 0;
+    pointer-events: none;
   }
 
   h1 {
-    margin-top: 20%;
     font-size: 2.5em;
   }
 
+  img {
+    width: 200px;
+    height: 200px;
+    border-radius: 25px;
+    object-fit: cover;
+    box-shadow: 0 0 25px rgba(255,255,255,0.7);
+    margin: 20px 0;
+    animation: float 3s ease-in-out infinite;
+  }
+
+  @keyframes float {
+    0%,100% {transform: translateY(0);}
+    50% {transform: translateY(-10px);}
+  }
+
   #message {
-    font-size: 1.2em;
     width: 80%;
-    margin: 20px auto;
-    min-height: 60px;
+    font-size: 1.3em;
+    min-height: 80px;
   }
 
   button {
-    padding: 12px 20px;
-    font-size: 16px;
+    padding: 14px 24px;
     border: none;
-    border-radius: 12px;
+    border-radius: 15px;
     background: white;
     color: #ff4d6d;
+    font-size: 16px;
     cursor: pointer;
     margin-top: 20px;
   }
 
-  /* Floating hearts */
-  .heart {
+  .heart, .sparkle {
     position: absolute;
-    bottom: -20px;
-    font-size: 20px;
     animation: floatUp 5s linear infinite;
+  }
+
+  .sparkle {
+    color: #fff;
+    font-size: 10px;
   }
 
   @keyframes floatUp {
@@ -54,49 +85,95 @@
 
 <body>
 
-<h1>🎂 Happy Birthday 💖</h1>
-<div id="message"></div>
+<!-- 🎁 START SCREEN -->
+<div class="screen" id="startScreen">
+  <h1>🎁 A Little Something For You</h1>
+  <button onclick="start()">Tap to Open 💖</button>
+</div>
 
-<button onclick="startSurprise()">Open Your Surprise 🎁</button>
+<!-- 💖 MAIN SCREEN -->
+<div class="screen" id="mainScreen">
+  <h1>🎂 Happy 19th Birthday Yurie 💖</h1>
+  <img src="yurie.jpg" alt="Yurie">
+  <div id="message"></div>
+  <button onclick="nextMessage()">Next 💌</button>
+</div>
 
 <audio id="bgMusic" loop>
-  <source src="YOUR-MUSIC-LINK.mp3" type="audio/mpeg">
+  <source src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_6c1a9d2f5e.mp3?filename=happy-birthday-to-you-piano-version-10964.mp3" type="audio/mpeg">
 </audio>
 
 <script>
-const text = "Hey... I just wanted to say that you make everything a little brighter. 💕 I hope today makes you as happy as you make others. Happy Birthday! 🎂";
+const messages = [
+  "Hey Yurie... happy 19th birthday 🎂💖",
+  "I made this just for you 😌",
+  "I hope today feels really special ✨",
+  "Because you really deserve all the good things 💕",
+  "You have this way of making everything feel lighter 🌸",
+  "And honestly... you’re kinda amazing",
+  "Even if you don’t always see it",
+  "But yeah… you really are 💖",
+  "I’m really glad you exist 😊",
+  "So today… just smile a lot okay?",
+  "Because it looks really good on you 😌✨",
+  "Okay last thing… 💭"
+];
 
 let index = 0;
+let started = false;
 
-function typeEffect() {
-  if (index < text.length) {
-    document.getElementById("message").innerHTML += text.charAt(index);
-    index++;
-    setTimeout(typeEffect, 40);
+function start() {
+  document.getElementById("startScreen").style.opacity = "0";
+  setTimeout(() => {
+    document.getElementById("startScreen").style.display = "none";
+    const main = document.getElementById("mainScreen");
+    main.style.opacity = "1";
+    main.style.pointerEvents = "all";
+  }, 800);
+
+  document.getElementById("bgMusic").play();
+  createEffects();
+}
+
+function typeEffect(text, i = 0) {
+  if (i < text.length) {
+    document.getElementById("message").innerHTML += text.charAt(i);
+    setTimeout(() => typeEffect(text, i + 1), 35);
   }
 }
 
-function startSurprise() {
-  document.getElementById("bgMusic").play();
-  typeEffect();
-  createHearts();
+function nextMessage() {
+  const msgBox = document.getElementById("message");
+
+  if (index < messages.length) {
+    msgBox.innerHTML = "";
+    typeEffect(messages[index]);
+    index++;
+  } else {
+    msgBox.innerHTML = "I kinda like you… 💖";
+  }
 }
 
-function createHearts() {
+function createEffects() {
   setInterval(() => {
     const heart = document.createElement("div");
-    heart.classList.add("heart");
+    heart.className = "heart";
     heart.innerHTML = "💖";
     heart.style.left = Math.random() * 100 + "vw";
-    heart.style.fontSize = (Math.random() * 20 + 10) + "px";
     document.body.appendChild(heart);
-
-    setTimeout(() => {
-      heart.remove();
-    }, 5000);
+    setTimeout(() => heart.remove(), 5000);
   }, 300);
+
+  setInterval(() => {
+    const sparkle = document.createElement("div");
+    sparkle.className = "sparkle";
+    sparkle.innerHTML = "✨";
+    sparkle.style.left = Math.random() * 100 + "vw";
+    document.body.appendChild(sparkle);
+    setTimeout(() => sparkle.remove(), 5000);
+  }, 500);
 }
 </script>
 
 </body>
-  </html>
+</html>
