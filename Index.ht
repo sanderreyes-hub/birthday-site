@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>For You 💖</title>
+
+<style>
+  body {
+    margin: 0;
+    font-family: 'Arial', sans-serif;
+    text-align: center;
+    background: linear-gradient(to right, #ff9a9e, #fecfef);
+    overflow: hidden;
+    color: white;
+  }
+
+  h1 {
+    margin-top: 20%;
+    font-size: 2.5em;
+  }
+
+  #message {
+    font-size: 1.2em;
+    width: 80%;
+    margin: 20px auto;
+    min-height: 60px;
+  }
+
+  button {
+    padding: 12px 20px;
+    font-size: 16px;
+    border: none;
+    border-radius: 12px;
+    background: white;
+    color: #ff4d6d;
+    cursor: pointer;
+    margin-top: 20px;
+  }
+
+  /* Floating hearts */
+  .heart {
+    position: absolute;
+    bottom: -20px;
+    font-size: 20px;
+    animation: floatUp 5s linear infinite;
+  }
+
+  @keyframes floatUp {
+    0% {transform: translateY(0); opacity: 1;}
+    100% {transform: translateY(-100vh); opacity: 0;}
+  }
+</style>
+</head>
+
+<body>
+
+<h1>🎂 Happy Birthday 💖</h1>
+<div id="message"></div>
+
+<button onclick="startSurprise()">Open Your Surprise 🎁</button>
+
+<audio id="bgMusic" loop>
+  <source src="YOUR-MUSIC-LINK.mp3" type="audio/mpeg">
+</audio>
+
+<script>
+const text = "Hey... I just wanted to say that you make everything a little brighter. 💕 I hope today makes you as happy as you make others. Happy Birthday! 🎂";
+
+let index = 0;
+
+function typeEffect() {
+  if (index < text.length) {
+    document.getElementById("message").innerHTML += text.charAt(index);
+    index++;
+    setTimeout(typeEffect, 40);
+  }
+}
+
+function startSurprise() {
+  document.getElementById("bgMusic").play();
+  typeEffect();
+  createHearts();
+}
+
+function createHearts() {
+  setInterval(() => {
+    const heart = document.createElement("div");
+    heart.classList.add("heart");
+    heart.innerHTML = "💖";
+    heart.style.left = Math.random() * 100 + "vw";
+    heart.style.fontSize = (Math.random() * 20 + 10) + "px";
+    document.body.appendChild(heart);
+
+    setTimeout(() => {
+      heart.remove();
+    }, 5000);
+  }, 300);
+}
+</script>
+
+</body>
+  </html>
